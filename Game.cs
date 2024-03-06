@@ -6,7 +6,7 @@ public class Game
     private PlayField field;
     private int score;
     private int tic;
-    private bool alive;
+    public bool alive;
     
     public Game()
     {
@@ -21,19 +21,28 @@ public class Game
     {
         Console.CursorVisible = false;
         field.InicalitonOfField();
-        field.DrawField();
+        Snake snake = new Snake(1);
         
     }
 
     public void PlayGame()
     {
+        Fruit fruit = null;
+        bool ateFruit = false;
         while (alive)
         {
+            Console.Clear();
             if (Console.KeyAvailable)
             {
                 ConsoleKeyInfo keyInput = Console.ReadKey(true);
                 snake.ChangeDirection(keyInput);
             }
+            snake.Move();
+            
+            field.RenderGame(15,15,snake, fruit);
+            
+            System.Threading.Thread.Sleep(500);
+            
         }
         
     }
