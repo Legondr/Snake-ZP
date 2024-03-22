@@ -13,7 +13,7 @@ public class Snake
 {
     private int length;
     public Direction direction;
-    private Queue<Tuple<int, int>> coordinates;
+    public Queue<Tuple<int, int>> coordinates;
 
 
     public Snake(int length)
@@ -62,9 +62,10 @@ public class Snake
         }
     }
 
-    public void Move()
+    public bool Move(PlayField field)
     {
         // Move the snake according to its direction
+        
         int headX = coordinates.Peek().Item1;
         int headY = coordinates.Peek().Item2;
 
@@ -94,12 +95,10 @@ public class Snake
         }
         
         // Check collision with walls
-        if (headX < 0 || headX >= Console.WindowWidth ||
-            headY < 0 || headY >= Console.WindowHeight)
+        if (headX < 0 || headX >= field.width ||
+            headY < 0 || headY >= field.height)
         {
-            // Collision with walls, handle game over
-            Console.WriteLine("Game Over - Collision with Walls");
-            Environment.Exit(0);
+            return false;
         }
         // Check collision with itself
         for (int i = 1; i < coordinates.Count; i++)
@@ -108,10 +107,11 @@ public class Snake
             if (segment.Item1 == headX && segment.Item2 == headY)
             {
                 // Collision with itself, handle game over
-                Console.WriteLine("Game Over - Collision with Itself");
-                Environment.Exit(0);
+                return false;
             }
         }
+
+        return true;
     }
 
     public Queue<Tuple<int, int>> GetCoordinates()

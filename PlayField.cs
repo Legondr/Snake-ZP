@@ -2,8 +2,8 @@
 
 public class PlayField
 {
-    private int height;
-    private int width;
+    public int height;
+    public int width;
     private char[,] field;
 
     public PlayField(int height, int width)
@@ -30,6 +30,7 @@ public class PlayField
                 }
             }
         }
+        PlaceFruit();
     }
     
     
@@ -38,48 +39,38 @@ public class PlayField
     {
         InicalitonOfField();
     }
-    public void RenderGame(int width, int height, Snake snake, Fruit fruit)
+
+    public void PlaceFruit()
     {
-        // Create the playing field
-        char[,] gameField = new char[height, width];
-
-        // Fill the playing field with empty spaces
-        for (int i = 0; i < height; i++)
-        {
-            for (int j = 0; j < width; j++)
-            {
-                if (i == 0 || i == width - 1 || j == 0 || j == height - 1)
-                {
-                    gameField[i, j] = 'O';
-                }
-                else
-                {
-                    gameField[i, j] = ' ';
-                }
-            }
-        }
-
-        // Add the snake to the playing field
-        Queue<Tuple<int, int>> snakeCoordinates = snake.GetCoordinates();
-        foreach (var segment in snakeCoordinates)
-        {
-            int x = segment.Item1;
-            int y = segment.Item2;
-            gameField[y, x] = '#'; // '#' represents the snake's body
-        }
+        Random random = new Random();
+        int postionX, postionY;
         
-        // Add the fruit to the playing field if it exists
-        if (fruit != null)
+        do
         {
-            gameField[fruit.Y, fruit.X] = 'X'; // 'X' represents the fruit
-        }
+             postionX = random.Next(1,width-1);
+             postionY = random.Next(1,height-1);
+        } while (field[postionY, postionX] != ' ');
+
+        field[postionY, postionX] = 'X';
+
+
+    }
+    
+    public void RenderGame(Snake snake)
+    {
+        var snakeHead = snake.coordinates.ElementAt(snake.coordinates.Count - 1);
+        int x = snakeHead.Item1;
+        int y = snakeHead.Item2;
+        field[x, y] = '#'; // '#' represents the snake's body
+
+        
 
         // Render the playing field
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
             {
-                Console.Write(gameField[i, j]);
+                Console.Write(field[i, j]);
             }
             Console.WriteLine();
         }

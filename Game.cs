@@ -27,8 +27,6 @@ public class Game
 
     public void PlayGame()
     {
-        Fruit fruit = null;
-        bool ateFruit = false;
         while (alive)
         {
             Console.Clear();
@@ -37,15 +35,29 @@ public class Game
                 ConsoleKeyInfo keyInput = Console.ReadKey(true);
                 snake.ChangeDirection(keyInput);
             }
-            snake.Move();
+            alive = snake.Move(field);
+
+            if (alive)
+            {
+                field.RenderGame(snake);
+            }
+            else
+            {
+                GameOver();
+            }
             
-            field.RenderGame(15,15,snake, fruit);
             
             System.Threading.Thread.Sleep(500);
             
         }
         
     }
-    
+
+    public void GameOver()
+    {
+        Console.Clear();
+        Console.WriteLine("Game over.");
+        Console.ReadKey();
+    }
     
 }
