@@ -52,8 +52,18 @@ public class PlayField
         } while (field[postionY, postionX] != ' ');
 
         field[postionY, postionX] = 'X';
+        
+    }
 
+    public bool CheckEatFruit(int headX, int headY)
+    {
+        if (field[headY, headX] == 'X')
+        {
+            PlaceFruit();
+            return true;
+        }
 
+        return false;
     }
     
     public void RenderGame(Snake snake)
@@ -61,7 +71,7 @@ public class PlayField
         var snakeHead = snake.coordinates.ElementAt(snake.coordinates.Count - 1);
         int x = snakeHead.Item1;
         int y = snakeHead.Item2;
-        field[x, y] = '#'; // '#' represents the snake's body
+        field[y, x] = '#'; // '#' represents the snake's body
 
         
 
@@ -75,5 +85,10 @@ public class PlayField
             Console.WriteLine();
         }
         
+    }
+
+    public void RemoveTail(int tailX, int tailY)
+    {
+        field[tailY, tailX] = ' ';
     }
 }

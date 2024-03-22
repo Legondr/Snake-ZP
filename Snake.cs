@@ -85,13 +85,21 @@ public class Snake
                 break;
         }
 
+        
+        
+        
         // Enqueue the new head position
         coordinates.Enqueue(new Tuple<int, int>(headX, headY));
 
         // Remove the tail segment if the snake has grown beyond its length
         if (coordinates.Count > length)
         {
-            coordinates.Dequeue();
+            var tail = coordinates.Dequeue();
+            int tailX = tail.Item1;
+            int tailY = tail.Item2;
+            
+            field.RemoveTail(tailX,tailY);
+            
         }
         
         // Check collision with walls
@@ -100,8 +108,10 @@ public class Snake
         {
             return false;
         }
+        
+        
         // Check collision with itself
-        for (int i = 1; i < coordinates.Count; i++)
+        for (int i = coordinates.Count - 2; i >= 0; i--)
         {
             var segment = coordinates.ElementAt(i);
             if (segment.Item1 == headX && segment.Item2 == headY)
@@ -111,13 +121,14 @@ public class Snake
             }
         }
 
+        if (field.CheckEatFruit(headX, headY))
+        {
+            length++;
+        }
+        
         return true;
     }
 
-    public Queue<Tuple<int, int>> GetCoordinates()
-    {
-        return coordinates;
-    }
     
    
 }
