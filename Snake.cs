@@ -91,6 +91,7 @@ public class Snake
         // Enqueue the new head position
         coordinates.Enqueue(new Tuple<int, int>(headX, headY));
 
+        /*
         // Remove the tail segment if the snake has grown beyond its length
         if (coordinates.Count > length)
         {
@@ -101,6 +102,7 @@ public class Snake
             field.RemoveTail(tailX,tailY);
             
         }
+        */
         
         // Check collision with walls
         if (headX < 0 || headX >= field.width ||
@@ -123,7 +125,17 @@ public class Snake
 
         if (field.CheckEatFruit(headX, headY))
         {
-            length++;
+            ExtendLenght();
+        }
+        else
+        {
+            // If the snake didn't eat a fruit, dequeue the tail
+            var tail = coordinates.Dequeue();
+            int tailX = tail.Item1;
+            int tailY = tail.Item2;
+        
+            // Tell the field to remove the tail
+            field.RemoveTail(tailX, tailY);
         }
         
         return true;
