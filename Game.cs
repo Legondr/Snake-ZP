@@ -25,6 +25,15 @@ public class Game
         
     }
 
+    public void ClearConsoleBuffer()
+    {
+        while (Console.KeyAvailable)
+        {
+            Console.ReadKey();
+        }
+            
+    }
+
     public void PlayGame()
     {
         while (alive)
@@ -33,6 +42,7 @@ public class Game
             if (Console.KeyAvailable)
             {
                 ConsoleKeyInfo keyInput = Console.ReadKey(true);
+                ClearConsoleBuffer();
                 snake.ChangeDirection(keyInput);
             }
             alive = snake.Move(field);
@@ -47,7 +57,7 @@ public class Game
             }
             
             
-            System.Threading.Thread.Sleep(500);
+            System.Threading.Thread.Sleep(300);
             
         }
         

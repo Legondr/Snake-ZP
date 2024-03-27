@@ -15,7 +15,9 @@ public class Snake
     public Direction direction;
     public Queue<Tuple<int, int>> coordinates;
 
-
+    public int lastHeadPostionX, lastHeadPostionY;
+    
+    
     public Snake(int length)
     {
         this.length = 1;
@@ -23,6 +25,8 @@ public class Snake
         this.coordinates = new Queue<Tuple<int, int>>();
         // Initialize the snake with a single segment at position (5, 5)
         this.coordinates.Enqueue(new Tuple<int, int>(5, 5));
+        lastHeadPostionX = 5;
+        lastHeadPostionY = 5;
     }
 
 
@@ -34,7 +38,6 @@ public class Snake
     public int ExtendLenght()
     {
         length++;
-        coordinates.Enqueue(coordinates.Peek());
         return length;
     }
 
@@ -66,8 +69,11 @@ public class Snake
     {
         // Move the snake according to its direction
         
-        int headX = coordinates.Peek().Item1;
-        int headY = coordinates.Peek().Item2;
+        
+        int headX = lastHeadPostionX;
+        
+        int headY = lastHeadPostionY;
+        
 
         switch (direction)
         {
@@ -85,24 +91,13 @@ public class Snake
                 break;
         }
 
-        
-        
+
+         lastHeadPostionX = headX;
+         lastHeadPostionY = headY;
         
         // Enqueue the new head position
         coordinates.Enqueue(new Tuple<int, int>(headX, headY));
-
-        /*
-        // Remove the tail segment if the snake has grown beyond its length
-        if (coordinates.Count > length)
-        {
-            var tail = coordinates.Dequeue();
-            int tailX = tail.Item1;
-            int tailY = tail.Item2;
-            
-            field.RemoveTail(tailX,tailY);
-            
-        }
-        */
+        
         
         // Check collision with walls
         if (headX < 0 || headX >= field.width ||
